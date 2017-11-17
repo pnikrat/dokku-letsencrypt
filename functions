@@ -87,7 +87,7 @@ letsencrypt_is_active() {
   # check if SSL is enabled on per-app level
   is_ssl_enabled "$app" || return 1
 
-  # check if certificate is identical to the current let's encrypt certificate by comparing SHA1 hashes 
+  # check if certificate is identical to the current let's encrypt certificate by comparing SHA1 hashes
   local cert_sha1=$( (cat "$DOKKU_ROOT/$app/tls/server.crt" 2>/dev/null) | sha1sum || echo "not_found");
   local le_sha1=$( (cat "$DOKKU_ROOT/$app/letsencrypt/certs/current/fullchain.pem" 2>/dev/null) | sha1sum || echo "not_found" );
   [[ "$cert_sha1" == "$le_sha1" ]] || return 2
@@ -149,7 +149,7 @@ letsencrypt_configure_and_get_dir() {
     domain_args="$domain_args -d $domain"
   done
 
-  local config="--server $server --email $DOKKU_LETSENCRYPT_EMAIL --tos_sha256 6373439b9f29d67a5cd4d18cbc7f264809342dbf21cb2ba2fc7588df987a6221 $domain_args"
+  local config="--server $server --email $DOKKU_LETSENCRYPT_EMAIL --tos_sha256 cc88d8d9517f490191401e7b54e9ffd12a2b9082ec7a1d4cec6101f9f1647e7b $domain_args"
 
   local config_hash=$(echo "$config" | sha1sum | awk '{print $1}')
   local config_dir="$le_root/certs/$config_hash"; mkdir -p "$config_dir"
@@ -179,5 +179,3 @@ letsencrypt_check_email() {
     return 1
   fi
 }
-
-
